@@ -24,6 +24,7 @@ public class Main {
 
         // VIEW ALL THE STOCK OF OUR CARS
         systemRenting.viewAllCar();
+        System.out.println("------------------------------------------------------");
 
         // this will show you all rented cars and customer
         systemRenting.viewRentingInfo();
@@ -355,11 +356,11 @@ class GarageRentalSystem{
         boolean check = true;
         for(RentalSystem rentalSystem:garageRented){
             if(rentalSystem.vehicle.getPlate().equals(carPlate)){
-                System.out.println("Vehicle already rented");
+                System.out.println("Vehicle is Rented");
                 check = false;
             }
         }
-        if(!check){
+        if(check){
             System.out.println("Vehicle is FREE");
         }
     }
