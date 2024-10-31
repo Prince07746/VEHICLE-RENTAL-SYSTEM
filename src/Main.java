@@ -30,21 +30,23 @@ public class Main {
         System.out.println("==================");
 
         // 3. rent a car
-        System.out.println("Rent a vehicle");
+        System.out.println("\n\nRent a vehicle");
+        System.out.println("---------------");
         System.out.print("Enter the plate of the vehicle: ");
         String plateCar = input.nextLine();
         systemRenting.rentVehicle(customer1,plateCar);
-        System.out.println("=================================");
+        System.out.println("-----------------------------------------");
 
 
         // 1. check if the vehicle is currently free or rented out
-        System.out.print("Enter the plate to check if vehicle is free or rented: ");
+        System.out.print("\n\nEnter the plate to check if vehicle is free or rented: ");
         String plate = input.nextLine();
         systemRenting.checkVehicle(plate);
-
+        System.out.println("------------------------------------------------------------");
 
 
         // 2. calculate total rental price for the customer
+        System.out.println("\n\nRental price for customer");
         systemRenting.calculateTotalPrice();
 
 
@@ -311,18 +313,20 @@ class GarageRentalSystem{
                 check = false;
             }
         }
-        if(!check){
+        if(check){
             System.out.print("Enter the number of days you want to rent: ");
             int days = input.nextInt();
             input.nextLine();
             for(Vehicle vehicle:garageCar){
                 if(vehicle.getPlate().equals(carPlate)){
                     garageRented.add(new RentalSystem(customer,vehicle,days));
-                    System.out.println("Car added successfully");
+                    System.out.println("Car Rented successfully");
                 }
             }
         }
+
     }
+
     public void viewRentingInfo(){
         if(garageRented.isEmpty()){
             System.out.println("not Rented Car in the garage");
