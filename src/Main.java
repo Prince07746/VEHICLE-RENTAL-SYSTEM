@@ -1,11 +1,39 @@
 import java.rmi.server.UID;
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Scanner;
 import java.util.UUID;
 
 public class Main {
+
+    static GarageRentalSystem systemRenting = new GarageRentalSystem();
+    static Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
 
+        //  customers are instantiated here
+        Customer customer1 = new Customer("Prince","kampala",20);
+        Customer customer2 = new Customer("Paolo","Palermo",20);
+        Customer customer3 = new Customer("Veronica","Roma",20);
+
+
+        // this will add all type of  vehicle  you want
+        systemRenting.addVehicle();
+        // this will show you all rented cars and customer
+        systemRenting.viewRentingInfo();
+
+
+        // 1. check if the vehicle is currently free or rented out
+        System.out.print("Enter the plate to check if vehicle is free or rented: ");
+        String plate = input.nextLine();
+        systemRenting.checkVehicle(plate);
+
+        // 2. calculate total rental price for the customer
+        systemRenting.calculateTotalPrice();
+
+
+
     }
+
 }
 
 
@@ -25,13 +53,13 @@ abstract class Vehicle{
   private String colour;
   private double price_per_day;
 
-    public Vehicle(String colour, double price_per_day) {
+    public Vehicle(String colour) {
         this.license = UUID.randomUUID().toString();
         // split the random id plate to have a small part of the id
         String[] splited = UUID.randomUUID().toString().split("-");
         this.plate = splited[0];
         this.colour = colour;
-        this.price_per_day = price_per_day;
+        this.price_per_day = 0;
     }
 
     public String getLicense() {
@@ -90,25 +118,37 @@ abstract class Vehicle{
 }
 
 class Car extends Vehicle{
-    public Car(String colour, double price_per_day) {
-        super(colour, price_per_day);
+
+    public Car(String colour,double price_per_day) {
+        super(colour);
+        setPrice_per_day(price_per_day);
+    }
+
+    public double getPrice(int days){
+        return getPrice_per_day()*days;
     }
 }
 
 class Truck extends Vehicle{
     public Truck(String colour, double price_per_day) {
-        super(colour, price_per_day);
+        super(colour);
+        setPrice_per_day(price_per_day);
+    }
+    public double getPrice(int days){
+        return getPrice_per_day()*days;
     }
 }
 
 class Motorcycle extends Vehicle{
     public Motorcycle(String colour, double price_per_day) {
-        super(colour, price_per_day);
+        super(colour);
+        setPrice_per_day(price_per_day);
     }
+    public double getPrice(int days){
+        return getPrice_per_day()*days;
+    }
+
 }
-
-
-
 
 
 class Customer{
@@ -159,5 +199,155 @@ class Customer{
         return Objects.hash(name, address, age);
     }
 }
+
+
+class RentalSystem{
+    Customer customer;
+    Vehicle vehicle;
+    int rentDays;
+
+    public RentalSystem(Customer customer, Vehicle vehicle, int rentDays) {
+        this.customer = customer;
+        this.vehicle = vehicle;
+        this.rentDays = rentDays;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
+    public int getRentDays() {
+        return rentDays;
+    }
+
+    public void setRentDays(int rentDays) {
+        this.rentDays = rentDays;
+    }
+}
+
+
+
+class GarageRentalSystem{
+
+    ArrayList<RentalSystem> garageRented = new ArrayList<>();
+    ArrayList<Vehicle> garageCar = new ArrayList<>();
+    static Scanner input = new Scanner(System.in);
+    public GarageRentalSystem(){
+
+    }
+    public void addVehicle(){
+        System.out.println("ADD VEHICLE");
+        System.out.println("============");
+        System.out.println("1. car");
+        System.out.println("2. truck");
+        System.out.println("3. motorcycle");
+        System.out.println("Enter: ");
+        String option  = input.nextLine();
+        switch (option){
+            case "1":
+
+                System.out.println("Car");
+                System.out.println("===");
+                System.out.print("Enter color: ");
+                String color = input.nextLine();
+                System.out.print("Enter Price per day: ");
+                double pricePerDay = input.nextDouble();
+                input.nextLine();
+                garageCar.add(new Car(color,pricePerDay));
+                System.out.println("car added successfully");
+                break;
+            case "2":
+                System.out.println("Truck");
+                System.out.println("===");
+                System.out.print("Enter color: ");
+                String colorTruck = input.nextLine();
+                System.out.print("Enter Price per day: ");
+                double pricePerDayTuck = input.nextDouble();
+                input.nextLine();
+                garageCar.add(new Truck(colorTruck,pricePerDayTuck));
+                System.out.println("Truck added successfully");
+                break;
+            case "3":
+                System.out.println("Motorcycle");
+                System.out.println("===");
+                System.out.print("Enter color: ");
+                String colorMotorcycle = input.nextLine();
+                System.out.print("Enter Price per day: ");
+                double pricePerDayMotorcycle = input.nextDouble();
+                input.nextLine();
+                garageCar.add(new Motorcycle(colorMotorcycle,pricePerDayMotorcycle));
+                System.out.println("Motorcycle added successfully");
+                break;
+            default:
+                System.out.println("Wrong number entered");
+                break;
+        }
+    }
+    public void rentVehicle(Customer customer,String carPlate){
+        boolean check = true;
+        for(RentalSystem rentalSystem:garageRented){
+            if(rentalSystem.vehicle.getPlate().equals(carPlate)){
+                System.out.println("car already rented");
+                check = false;
+            }
+        }
+        if(!check){
+            System.out.print("Enter the number of days you want to rent: ");
+            int days = input.nextInt();
+            input.nextLine();
+            for(Vehicle vehicle:garageCar){
+                if(vehicle.getPlate().equals(carPlate)){
+                    garageRented.add(new RentalSystem(customer,vehicle,days));
+                    System.out.println("Car added successfully");
+                }
+            }
+        }
+    }
+    public void viewRentingInfo(){
+        for(RentalSystem rented:garageRented){
+            System.out.println("Vehicle Rented");
+            System.out.println("---------------");
+            System.out.println(rented.getVehicle().toString());
+            System.out.println("Customer who rented");
+            System.out.println("-------------------");
+            System.out.println(rented.getCustomer().toString());
+            System.out.println("TOTAL COST for: "+rented.getRentDays()+" days : "+rented.getRentDays()*rented.getVehicle().getPrice_per_day());
+
+        }
+    }
+
+    public void checkVehicle(String carPlate){
+        boolean check = true;
+        for(RentalSystem rentalSystem:garageRented){
+            if(rentalSystem.vehicle.getPlate().equals(carPlate)){
+                System.out.println("Vehicle already rented");
+                check = false;
+            }
+        }
+        if(!check){
+            System.out.println("Vehicle is FREE");
+        }
+    }
+    public void calculateTotalPrice(){
+        for(RentalSystem rentalSystem:garageRented){
+            System.out.println("Customer "+rentalSystem.getCustomer().getName()+" | "+rentalSystem.rentDays*rentalSystem.getVehicle().getPrice_per_day());
+        }
+    }
+
+
+}
+
 
 
