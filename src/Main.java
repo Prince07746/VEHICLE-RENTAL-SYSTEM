@@ -19,8 +19,12 @@ public class Main {
 
 
         // this will add all type of  vehicle  you want
-        systemRenting.addVehicle();
-        System.out.println("==================");
+        int i = 0;
+        while (i < 5){
+            systemRenting.addVehicle();
+            System.out.println("==================");
+        i++;
+        }
 
 
         // VIEW ALL THE STOCK OF OUR CARS
