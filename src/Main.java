@@ -1,4 +1,5 @@
 import java.rmi.server.UID;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
@@ -18,14 +19,30 @@ public class Main {
 
         // this will add all type of  vehicle  you want
         systemRenting.addVehicle();
+        System.out.println("==================");
+
+
+        // VIEW ALL THE STOCK OF OUR CARS
+        systemRenting.viewAllCar();
+
         // this will show you all rented cars and customer
         systemRenting.viewRentingInfo();
+        System.out.println("==================");
+
+        // 3. rent a car
+        System.out.println("Rent a vehicle");
+        System.out.print("Enter the plate of the vehicle: ");
+        String plateCar = input.nextLine();
+        systemRenting.rentVehicle(customer1,plateCar);
+        System.out.println("=================================");
 
 
         // 1. check if the vehicle is currently free or rented out
         System.out.print("Enter the plate to check if vehicle is free or rented: ");
         String plate = input.nextLine();
         systemRenting.checkVehicle(plate);
+
+
 
         // 2. calculate total rental price for the customer
         systemRenting.calculateTotalPrice();
@@ -36,17 +53,8 @@ public class Main {
 
 }
 
-
-// cars, trucks and motorcycles
-//license plate
-//colour
-//price per day
-// ====================
-//Customer information:
-//
-//Name
-//        Address
-//Age
+// super or main class for all kind of vehicles
+// ===========================================
 abstract class Vehicle{
   private String license;
   private String plate;
@@ -316,6 +324,9 @@ class GarageRentalSystem{
         }
     }
     public void viewRentingInfo(){
+        if(garageRented.isEmpty()){
+            System.out.println("not Rented Car in the garage");
+        }
         for(RentalSystem rented:garageRented){
             System.out.println("Vehicle Rented");
             System.out.println("---------------");
@@ -325,6 +336,14 @@ class GarageRentalSystem{
             System.out.println(rented.getCustomer().toString());
             System.out.println("TOTAL COST for: "+rented.getRentDays()+" days : "+rented.getRentDays()*rented.getVehicle().getPrice_per_day());
 
+        }
+    }
+
+    public void viewAllCar(){
+        System.out.println("Garage of our Cars");
+        System.out.println("==================");
+        for(Vehicle vehicle:garageCar){
+            System.out.println(vehicle.toString());
         }
     }
 
