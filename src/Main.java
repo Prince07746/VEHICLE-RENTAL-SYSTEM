@@ -12,9 +12,10 @@ public class Main {
     public static void main(String[] args) {
 
         //  customers are instantiated here
-        Customer customer1 = new Customer("Prince","kampala",20);
-        Customer customer2 = new Customer("Paolo","Palermo",20);
-        Customer customer3 = new Customer("Veronica","Roma",20);
+        Customer customer1 = new Customer("Prince","kampala",22);
+        Customer customer2 = new Customer("Paolo","Palermo",27);
+        Customer customer3 = new Customer("Veronica","Roma",30);
+        Customer customer4 = new Customer("sam","mila",24);
 
 
         // this will add all type of  vehicle  you want
@@ -33,11 +34,27 @@ public class Main {
         // 3. rent a car
         System.out.println("\n\nRent a vehicle");
         System.out.println("---------------");
+        // first renting customer
         System.out.print("Enter the plate of the vehicle: ");
         String plateCar = input.nextLine();
         systemRenting.rentVehicle(customer1,plateCar);
         System.out.println("-----------------------------------------");
-
+        // second renting customer
+        System.out.print("Enter the plate 2 of the vehicle 2: ");
+        String plateCar2 = input.nextLine();
+        systemRenting.rentVehicle(customer2,plateCar2);
+        System.out.println("-----------------------------------------");
+        // third renting customer
+        System.out.print("Enter the plate 2 of the vehicle 2: ");
+        String plateCar3 = input.nextLine();
+        systemRenting.rentVehicle(customer3,plateCar3);
+        System.out.println("-----------------------------------------");
+        // four renting customer
+        System.out.print("Enter the plate 2 of the vehicle 2: ");
+        String plateCar4 = input.nextLine();
+        systemRenting.rentVehicle(customer4,plateCar4);
+        System.out.println("-----------------------------------------");
+        // ========================================================================
 
         // 1. check if the vehicle is currently free or rented out
         System.out.print("\n\nEnter the plate to check if vehicle is free or rented: ");
